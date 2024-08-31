@@ -17,3 +17,14 @@ export const getProductById = async (req, res) => {
     console.log(e.message);
   }
 };
+
+export const getProductsByCategory = async (req, res) => {
+  try {
+    console.log(req.query);
+    const query = { category: req.query.category };
+    const result = await productsModel.find(query);
+    res.send(result);
+  } catch (error) {
+    console.log(e.message);
+  }
+};
