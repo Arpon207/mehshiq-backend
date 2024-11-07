@@ -19,10 +19,19 @@ export const getProductById = async (req, res) => {
 };
 
 export const getProductsByCategory = async (req, res) => {
+  const filter = {
+    ...(req.query.category && { category: req.query.category }),
+    ...(req.query.min &&
+      req.query.max && { price: { $gt: req.query.min, $lt: req.query.max } }),
+  };
+  const sort = {
+    ...(req.query.sort === "popularity" && { sold: -1 }),
+    ...(req.query.sort === "latest" && { createdAt: -1 }),
+    ...(req.query.sort === "priceLowToHigh" && { price: 1 }),
+    ...(req.query.sort === "priceHighToLow" && { price: -1 }),
+  };
   try {
-    console.log(req.query);
-    const query = { category: req.query.category };
-    const result = await productsModel.find(query);
+    const result = await productsModel.find(filter).sort(sort);
     res.send(result);
   } catch (error) {
     console.log(e.message);
