@@ -37,3 +37,17 @@ export const getProductsByCategory = async (req, res) => {
     console.log(e.message);
   }
 };
+
+export const getProductsByQuery = async (req, res) => {
+  const filter = {
+    ...(req.query.search && {
+      title: { $regex: req.query.search, $options: "i" },
+    }),
+  };
+  try {
+    const result = await productsModel.find(filter);
+    return res.status(200).json({ result });
+  } catch (error) {
+    throw error;
+  }
+};
