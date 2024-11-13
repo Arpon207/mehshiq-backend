@@ -30,9 +30,16 @@ export const getProductsByCategory = async (req, res) => {
     ...(req.query.sort === "priceLowToHigh" && { price: 1 }),
     ...(req.query.sort === "priceHighToLow" && { price: -1 }),
   };
+  const currentPage = req.query.currentPage;
+  const limitPerPage = req.query.limitPerPage;
   try {
-    const result = await productsModel.find(filter).sort(sort);
-    res.send(result);
+    const result = await productsModel
+      .find(filter)
+      .sort(sort)
+      .skip((currentPage - 1) * limitPerPage)
+      .limit(limitPerPage);
+    const count = await productsModel.countDocuments(filter);
+    res.send({ result, count });
   } catch (error) {
     console.log(e.message);
   }
