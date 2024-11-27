@@ -2,6 +2,7 @@ import express from "express";
 import {
   bestSellerProducts,
   getAllProducts,
+  getBackPacks,
   getMensProducts,
   getProductById,
   getProductsByCategory,
@@ -27,5 +28,7 @@ router.get("/bestSellerProducts", bestSellerProducts);
 router.get("/womens", getWomensProducts);
 
 router.get("/mens", getMensProducts);
+
+router.get("/backpacks", getBackPacks);
 
 export default router;

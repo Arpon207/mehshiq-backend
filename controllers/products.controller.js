@@ -45,6 +45,17 @@ export const getMensProducts = async (req, res) => {
   }
 };
 
+export const getBackPacks = async (req, res) => {
+  try {
+    const result = await productsModel
+      .find({ category: "Backpacks" })
+      .limit(10);
+    res.send(result);
+  } catch (error) {
+    console.log(e.message);
+  }
+};
+
 export const getProductById = async (req, res) => {
   try {
     const result = await productsModel.findById(req.params.id);
