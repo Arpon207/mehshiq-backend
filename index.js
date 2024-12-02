@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import productRoute from "./routes/products.js";
+import reviewRoute from "./routes/reviews.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ connection();
 app.use(cors());
 app.use(express.json());
 app.use("/api/products/", productRoute);
+app.use("/api/reviews/", reviewRoute);
 
 app.get("/", async (req, res) => {
   res.send("MehShiq server.");
