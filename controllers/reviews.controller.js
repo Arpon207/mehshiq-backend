@@ -31,7 +31,7 @@ export const addReview = async (req, res) => {
 export const getAllReviews = async (req, res) => {
   const product = req.query.product;
   try {
-    const result = await reviewsModel.find({ product });
+    const result = await reviewsModel.find({ product }).sort({ createdAt: -1 });
     res.status(200).send(result);
   } catch (error) {
     console.log(error);
