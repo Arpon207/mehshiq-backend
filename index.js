@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import productRoute from "./routes/products.js";
 import reviewRoute from "./routes/reviews.js";
+import userRoute from "./routes/user.js";
+import orderRoute from "./routes/order.js";
 import bodyparser from "body-parser";
 
 const app = express();
@@ -32,6 +34,8 @@ app.use(bodyparser.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/api/products/", productRoute);
 app.use("/api/reviews/", reviewRoute);
+app.use("/api/users", userRoute);
+app.use("/api/orders", orderRoute);
 
 app.get("/", async (req, res) => {
   res.send("MehShiq server.");
