@@ -52,6 +52,14 @@ const orderSchema = new mongoose.Schema(
     additionalComment: {
       type: String,
     },
+    status: {
+      type: String,
+      default: "Pending",
+    },
+    delivered: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
