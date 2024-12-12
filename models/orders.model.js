@@ -23,7 +23,6 @@ const orderSchema = new mongoose.Schema(
     },
     customerEmail: {
       type: String,
-      required: true,
     },
     ShippingDivision: {
       type: String,

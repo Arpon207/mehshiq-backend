@@ -3,6 +3,7 @@ import {
   bestSellerProducts,
   getAllProducts,
   getBackPacks,
+  getLeastProducts,
   getMensProducts,
   getProductById,
   getProductsByCategory,
@@ -30,5 +31,7 @@ router.get("/womens", getWomensProducts);
 router.get("/mens", getMensProducts);
 
 router.get("/backpacks", getBackPacks);
+
+router.get("/getLeastSold", getLeastProducts);
 
 export default router;

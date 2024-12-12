@@ -105,3 +105,12 @@ export const getProductsByQuery = async (req, res) => {
     throw error;
   }
 };
+
+export const getLeastProducts = async (req, res) => {
+  try {
+    const result = await productsModel.find().sort({ sold: 1 }).limit(8);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
