@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addProduct,
   bestSellerProducts,
   getAllProducts,
   getBackPacks,
@@ -13,6 +14,8 @@ import {
 } from "../controllers/products.controller.js";
 
 const router = express.Router();
+
+router.post("/add", addProduct);
 
 router.get("/all", getAllProducts);
 

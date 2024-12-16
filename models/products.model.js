@@ -14,10 +14,9 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    colors: [String],
-    availableQuantity: {
-      type: Number,
-      default: 0,
+    variants: {
+      type: Array,
+      required: true,
     },
     totalSold: {
       type: Number,
@@ -28,12 +27,12 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     tags: [String],
-    images: [Object],
     video: {
       type: String,
     },
     discount: {
       type: Number,
+      default: 0,
     },
     reviews: [
       {

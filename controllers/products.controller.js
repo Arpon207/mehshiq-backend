@@ -1,4 +1,30 @@
+import cloudinary from "../lib/cloudinary.config.js";
 import productsModel from "../models/products.model.js";
+
+export const addProduct = async (req, res) => {
+  const productData = req.body;
+  const { variants } = productData;
+  try {
+    if (variants) {
+      for (let i = 0; i < variants.length; i++) {
+        const { url, public_id } = await cloudinary.uploader.upload(
+          variants[i].image,
+          {
+            upload_preset: "product_images",
+            // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
+          }
+        );
+        variants[i].image = { url, public_id };
+      }
+    }
+    const newProductData = { ...productData, variants: variants };
+    const product = new productsModel(newProductData);
+    const result = await product.save();
+    res.status(201).json({ result });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getAllProducts = async (req, res) => {
   try {

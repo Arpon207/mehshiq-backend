@@ -6,6 +6,7 @@ import productRoute from "./routes/products.js";
 import reviewRoute from "./routes/reviews.js";
 import userRoute from "./routes/user.js";
 import orderRoute from "./routes/order.js";
+import categoryRoute from "./routes/categories.js";
 import bodyparser from "body-parser";
 
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/products/", productRoute);
 app.use("/api/reviews/", reviewRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
+app.use("/api/categories", categoryRoute);
 
 app.get("/", async (req, res) => {
   res.send("MehShiq server.");
