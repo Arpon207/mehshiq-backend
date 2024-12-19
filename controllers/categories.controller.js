@@ -13,7 +13,7 @@ export const addCategory = async (req, res) => {
 
 export const getCategory = async (req, res) => {
   try {
-    const result = await categoryModel.find();
+    const result = await categoryModel.find().select("title");
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
