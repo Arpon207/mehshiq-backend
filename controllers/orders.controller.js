@@ -16,3 +16,22 @@ export const createOrder = async (req, res) => {
     console.log(error);
   }
 };
+
+export const getOrders = async (req, res) => {
+  try {
+    const result = await Order.find().sort({ createdAt: -1 });
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrderById = async (req, res) => {
+  const id = req.query.id;
+  try {
+    const result = await Order.findById(id);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};

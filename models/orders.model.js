@@ -48,6 +48,14 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+    finalSubTotal: {
+      type: Number,
+      required: true,
+    },
     additionalComment: {
       type: String,
     },
