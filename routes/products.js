@@ -11,11 +11,13 @@ import {
   getProductsByQuery,
   getWomensProducts,
   newProducts,
+  uploadImages,
 } from "../controllers/products.controller.js";
 
 const router = express.Router();
 
 router.post("/add", addProduct);
+router.post("/image/upload", uploadImages);
 
 router.get("/all", getAllProducts);
 

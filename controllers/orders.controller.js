@@ -35,3 +35,14 @@ export const getOrderById = async (req, res) => {
     console.log(error);
   }
 };
+
+export const handleUpdateStatus = async (req, res) => {
+  const id = req.query.id;
+  const status = req.body.status;
+  try {
+    const result = await Order.findByIdAndUpdate(id, {
+      status: status,
+    });
+    res.status(200).json({ message: "Order status updated" });
+  } catch (error) {}
+};

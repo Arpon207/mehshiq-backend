@@ -1,3 +1,4 @@
+import formidable from "formidable";
 import cloudinary from "../lib/cloudinary.config.js";
 import productsModel from "../models/products.model.js";
 
@@ -23,6 +24,32 @@ export const addProduct = async (req, res) => {
     res.status(201).json({ result });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const uploadImages = async (req, res) => {
+  const form = formidable({});
+  try {
+    const [_, files] = await form.parse(req);
+    let allImage = [];
+    const { images } = files;
+    for (let i = 0; i < images.length; i++) {
+      const { url, public_id } = await cloudinary.uploader.upload(
+        images[i].filepath,
+        {
+          upload_preset: "product_images",
+          // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
+        }
+      );
+      allImage.push({ url, public_id });
+    }
+    return res
+      .status(201)
+      .json({ images: allImage, message: "images added successfully." });
+  } catch (error) {
+    return res
+      .status(501)
+      .json({ images: allImage, message: "Failed to add images." });
   }
 };
 
