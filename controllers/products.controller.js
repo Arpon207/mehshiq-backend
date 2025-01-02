@@ -167,3 +167,77 @@ export const getLeastProducts = async (req, res) => {
     console.log(error);
   }
 };
+
+export const updateVariantQuantity = async (req, res) => {
+  const id = req.query.id;
+  const color = req.query.color;
+  const quantity = req.query.quantity;
+  try {
+    const result = await productsModel.findOneAndUpdate(
+      { _id: id, "variants.colorName": color },
+      {
+        $set: {
+          "variants.$.quantity": quantity,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteVariant = async (req, res) => {
+  const id = req.query.id;
+  const color = req.query.color;
+  const public_id = req.query.public_id;
+  try {
+    if (public_id) {
+      await cloudinary.uploader.destroy(public_id).then(async (response) => {
+        const result = await productsModel.findOneAndUpdate(
+          { _id: id },
+          {
+            $pull: {
+              variants: { colorName: color },
+            },
+          },
+          { new: true }
+        );
+        res.status(200).json(result);
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addVariant = async (req, res) => {
+  const id = req.query.id;
+  const variant = req.body;
+
+  try {
+    if (variant) {
+      const { url, public_id } = await cloudinary.uploader.upload(
+        variant.image,
+        {
+          upload_preset: "product_images",
+          // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
+        }
+      );
+      variant.image = { url, public_id };
+    }
+    const result = await productsModel.findOneAndUpdate(
+      { _id: id },
+      {
+        $push: {
+          variants: variant,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};

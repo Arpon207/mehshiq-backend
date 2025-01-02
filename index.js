@@ -8,17 +8,28 @@ import userRoute from "./routes/user.js";
 import orderRoute from "./routes/order.js";
 import categoryRoute from "./routes/categories.js";
 import bodyparser from "body-parser";
+import http from "http";
+import { Server } from "socket.io";
+import ordersModel from "./models/orders.model.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
 dotenv.config();
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:5173", "https://mehshiq.netlify.app/"], // Replace with your admin panel URL
+    methods: ["GET", "POST"],
+  },
+});
 
 //connection
 const connection = async () => {
   try {
     mongoose.set("strictQuery", true);
     await mongoose.connect(process.env.MONGO_URI);
-    app.listen(port, () => {});
+    server.listen(port, () => {});
     console.log("connected to MongoDB.");
   } catch (error) {
     throw error;
@@ -38,6 +49,21 @@ app.use("/api/reviews/", reviewRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/categories", categoryRoute);
+
+// io.on("connection", (socket) => {
+//   console.log("Admin connected:", socket.id);
+
+//   socket.on("disconnect", () => {
+//     console.log("Admin disconnected:", socket.id);
+//   });
+// });
+
+ordersModel.watch().on("change", (change) => {
+  if (change.operationType === "insert") {
+    const newOrder = change.fullDocument;
+    io.emit("newOrder", newOrder);
+  }
+});
 
 app.get("/", async (req, res) => {
   res.send("MehShiq server.");

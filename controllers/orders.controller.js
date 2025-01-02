@@ -11,6 +11,7 @@ export const createOrder = async (req, res) => {
     const newOrderDetails = { ...orderDetails, orderId: generateOrderId() };
     const orderBody = new Order(newOrderDetails);
     const result = await orderBody.save();
+    io.emmit("newOrder", newOrderDetails);
     res.status(201).json({ result });
   } catch (error) {
     console.log(error);

@@ -1,7 +1,9 @@
 import express from "express";
 import {
   addProduct,
+  addVariant,
   bestSellerProducts,
+  deleteVariant,
   getAllProducts,
   getBackPacks,
   getLeastProducts,
@@ -11,6 +13,7 @@ import {
   getProductsByQuery,
   getWomensProducts,
   newProducts,
+  updateVariantQuantity,
   uploadImages,
 } from "../controllers/products.controller.js";
 
@@ -38,5 +41,11 @@ router.get("/mens", getMensProducts);
 router.get("/backpacks", getBackPacks);
 
 router.get("/getLeastSold", getLeastProducts);
+
+router.put("/updateQuantity", updateVariantQuantity);
+
+router.put("/deleteVariant", deleteVariant);
+
+router.put("/addVariant", addVariant);
 
 export default router;
