@@ -4,6 +4,7 @@ import {
   addVariant,
   bestSellerProducts,
   deleteVariant,
+  editDetails,
   getAllProducts,
   getBackPacks,
   getLeastProducts,
@@ -47,5 +48,7 @@ router.put("/updateQuantity", updateVariantQuantity);
 router.put("/deleteVariant", deleteVariant);
 
 router.put("/addVariant", addVariant);
+
+router.put("/editDetails", editDetails);
 
 export default router;

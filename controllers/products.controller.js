@@ -241,3 +241,16 @@ export const addVariant = async (req, res) => {
     console.log(error);
   }
 };
+
+export const editDetails = async (req, res) => {
+  const id = req.query.id;
+  const details = req.body;
+  try {
+    const result = await productsModel.findOneAndUpdate({ _id: id }, details, {
+      new: true,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
