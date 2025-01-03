@@ -20,8 +20,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      "https://admin-mehshiq.netlify.app",
-      "https://mehshiq.netlify.app",
+      "https://admin-mehshiq.netlify.app/",
+      "https://mehshiq.netlify.app/",
     ], // Replace with your admin panel URL
     methods: ["GET", "POST"],
   },
