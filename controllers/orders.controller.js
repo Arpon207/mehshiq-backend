@@ -46,3 +46,18 @@ export const handleUpdateStatus = async (req, res) => {
     res.status(200).json({ message: "Order status updated" });
   } catch (error) {}
 };
+
+export const trackOrder = async (req, res) => {
+  const phone = req.query.phone;
+  const orderId = req.query.orderId;
+  console.log(phone, orderId);
+  try {
+    const result = await Order.findOne({
+      customerPhone: phone,
+      orderId: orderId,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};

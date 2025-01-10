@@ -28,7 +28,7 @@ const productSchema = new mongoose.Schema(
     },
     tags: [String],
     video: {
-      type: String,
+      type: Object,
     },
     discount: {
       type: Number,

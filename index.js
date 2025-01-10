@@ -29,9 +29,9 @@ connection();
 //middlewares
 app.use(cors());
 
-app.use(bodyparser.json({ limit: "50mb" }));
+app.use(bodyparser.json({ limit: "150mb" }));
 
-app.use(bodyparser.urlencoded({ extended: true, limit: "50mb" }));
+app.use(bodyparser.urlencoded({ extended: true, limit: "150mb" }));
 
 app.use("/api/products/", productRoute);
 app.use("/api/reviews/", reviewRoute);
