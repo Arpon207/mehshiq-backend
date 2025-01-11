@@ -4,8 +4,7 @@ import productsModel from "../models/products.model.js";
 
 export const addProduct = async (req, res) => {
   const productData = req.body;
-  const { variants, video } = productData;
-  let videoFile;
+  const { variants } = productData;
   try {
     if (variants) {
       for (let i = 0; i < variants.length; i++) {
@@ -19,21 +18,9 @@ export const addProduct = async (req, res) => {
         variants[i].image = { url, public_id };
       }
     }
-    if (video) {
-      const { secure_url, public_id } = await cloudinary.uploader.upload(
-        video,
-        {
-          resource_type: "video",
-          upload_preset: "video_upload",
-          //   // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
-        }
-      );
-      videoFile = { secure_url, public_id };
-    }
     const newProductData = {
       ...productData,
       variants: variants,
-      video: videoFile,
     };
     const product = new productsModel(newProductData);
     const result = await product.save();
