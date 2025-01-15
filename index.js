@@ -7,7 +7,9 @@ import reviewRoute from "./routes/reviews.js";
 import userRoute from "./routes/user.js";
 import orderRoute from "./routes/order.js";
 import categoryRoute from "./routes/categories.js";
+import authRoute from "./routes/auth.js";
 import bodyparser from "body-parser";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,17 +29,22 @@ const connection = async () => {
 connection();
 
 //middlewares
-app.use(cors());
+app.use(
+  cors({ origin: "https://admin-mehshiq.netlify.app", credentials: true })
+);
 
 app.use(bodyparser.json({ limit: "150mb" }));
 
 app.use(bodyparser.urlencoded({ extended: true, limit: "150mb" }));
+
+app.use(cookieParser());
 
 app.use("/api/products/", productRoute);
 app.use("/api/reviews/", reviewRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/categories", categoryRoute);
+app.use("/api/auth", authRoute);
 
 app.get("/", async (req, res) => {
   res.send("MehShiq server.");
