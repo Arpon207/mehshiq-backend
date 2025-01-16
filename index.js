@@ -30,7 +30,7 @@ connection();
 
 //middlewares
 app.use(
-  cors({ origin: "https://admin-mehshiq.netlify.app", credentials: true })
+  cors({ origin: "https://admin-mehshiq.netlify.app/", credentials: true })
 );
 
 app.use(bodyparser.json({ limit: "150mb" }));
