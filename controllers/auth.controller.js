@@ -85,7 +85,6 @@ export const logout = async (req, res) => {
 };
 
 export const checkAuth = async (req, res) => {
-  console.log("clicked");
   try {
     const user = await authModel.findById(req.userId).select("-password");
     if (!user) {
