@@ -30,12 +30,18 @@ connection();
 
 //middlewares
 app.use(
-  cors({ origin: "https://mehshiq-admin.onrender.com", credentials: true })
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://admin-mehshiq.netlify.app"
+        : "http://localhost:5173",
+    credentials: true,
+  })
 );
 
-app.use(bodyparser.json({ limit: "150mb" }));
+app.use(bodyparser.json({ limit: "50mb" }));
 
-app.use(bodyparser.urlencoded({ extended: true, limit: "150mb" }));
+app.use(bodyparser.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use(cookieParser());
 
