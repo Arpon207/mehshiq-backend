@@ -61,3 +61,39 @@ export const trackOrder = async (req, res) => {
     console.log(error);
   }
 };
+
+export const getDashboardMetrics = async (req, res) => {
+  try {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const salesData = await Order.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: sevenDaysAgo }, // Orders from last 7 days
+          status: "delivered", // Only delivered orders
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+            day: { $dayOfMonth: "$createdAt" },
+            dayOfWeek: { $dayOfWeek: "$createdAt" }, // Get weekday (1=Sunday, 2=Monday, ...)
+          },
+          totalOrders: { $sum: 1 }, // Count total delivered orders per day
+          totalSales: { $sum: "$subtotal" }, // Sum total sales per day
+        },
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 }, // Sort by date
+      },
+    ]);
+
+    res.json({ salesData });
+  } catch (error) {
+    console.error("Failed to fetch dashboard metrics:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
