@@ -50,7 +50,6 @@ export const handleUpdateStatus = async (req, res) => {
 export const trackOrder = async (req, res) => {
   const phone = req.query.phone;
   const orderId = req.query.orderId;
-  console.log(phone, orderId);
   try {
     const result = await Order.findOne({
       customerPhone: phone,

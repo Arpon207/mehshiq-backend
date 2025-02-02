@@ -29,19 +29,19 @@ const connection = async () => {
 connection();
 
 //middlewares
-app.use(
-  cors({
-    origin: [
-      process.env.NODE_ENV === "production"
-        ? "https://admin-mehshiq.netlify.app"
-        : "http://localhost:5173",
-      process.env.CLIENT_ENV === "production"
-        ? "https://mehshiq.netlify.app"
-        : "http://localhost:1992",
-    ],
-    credentials: true,
-  })
-);
+app.use(cors());
+
+// {
+//   origin: [
+//     process.env.NODE_ENV === "production"
+//       ? "https://admin-mehshiq.netlify.app"
+//       : "http://localhost:5173",
+//     process.env.CLIENT_ENV === "production"
+//       ? "https://mehshiq.netlify.app"
+//       : "http://localhost:1992",
+//   ],
+//   credentials: true,
+// }
 
 app.use(bodyparser.json({ limit: "50mb" }));
 

@@ -1,7 +1,7 @@
 import authModel from "../models/auth.model.js";
 import bcrypt from "bcrypt";
 import { generateVerificationToken } from "../utils/generateVeficationToken.js";
-import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
+import { generateToken } from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   const { email, name, password } = req.body;
@@ -29,15 +29,9 @@ export const signup = async (req, res) => {
 
     await user.save();
 
-    generateTokenAndSetCookie(res, user._id, user.role);
-
     res.status(201).json({
       success: true,
       message: "user created successfully",
-      user: {
-        ...user._doc,
-        password: undefined,
-      },
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -60,7 +54,11 @@ export const login = async (req, res) => {
         .json({ success: false, message: "Invalid credentials." });
     }
 
-    generateTokenAndSetCookie(res, user._id);
+    if (user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized Access." });
+    }
+
+    const token = generateToken(res, user._id);
     user.lastLogin = new Date();
     await user.save();
 
@@ -70,17 +68,9 @@ export const login = async (req, res) => {
       user: {
         ...user._doc,
         password: undefined,
+        token,
       },
     });
-  } catch (error) {}
-};
-
-export const logout = async (req, res) => {
-  try {
-    res.clearCookie("token");
-    res
-      .status(200)
-      .json({ success: true, message: "Logged out successfully." });
   } catch (error) {}
 };
 
