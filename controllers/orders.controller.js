@@ -18,9 +18,36 @@ export const createOrder = async (req, res) => {
 };
 
 export const getOrders = async (req, res) => {
+  const date = req.query?.date;
+  const startDate = new Date(date);
+  startDate.setHours(0, 0, 0, 0);
+  const endDate = new Date(date);
+  endDate.setHours(23, 59, 59, 999);
+
+  const query = {
+    ...(req.query.date && {
+      createdAt: {
+        $gte: startDate,
+        $lte: endDate,
+      },
+    }),
+    ...(req.query.filter && { status: req.query.filter }),
+    ...(req.query.orderId && {
+      orderId: { $regex: req.query.orderId },
+    }),
+    ...(req.query.phone && {
+      customerPhone: { $regex: parseInt(req.query.phone) },
+    }),
+  };
+  const currentPage = req.query.currentPage;
+  const limitPerPage = req.query.limitPerPage;
   try {
-    const result = await Order.find().sort({ createdAt: -1 });
-    res.status(200).json(result);
+    const result = await Order.find(query)
+      .skip((currentPage - 1) * limitPerPage)
+      .limit(limitPerPage)
+      .sort({ createdAt: -1 });
+    const count = await Order.countDocuments(query);
+    res.status(200).json({ result, count });
   } catch (error) {
     console.log(error);
   }
@@ -70,7 +97,7 @@ export const getDashboardMetrics = async (req, res) => {
       {
         $match: {
           createdAt: { $gte: sevenDaysAgo }, // Orders from last 7 days
-          status: "delivered", // Only delivered orders
+          status: "Delivered", // Only delivered orders
         },
       },
       {

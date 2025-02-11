@@ -11,6 +11,7 @@ import {
   getMensProducts,
   getProductById,
   getProductsByCategory,
+  getProductsByFilter,
   getProductsByQuery,
   getWomensProducts,
   newProducts,
@@ -42,6 +43,10 @@ router.get("/mens", getMensProducts);
 router.get("/backpacks", getBackPacks);
 
 router.get("/getLeastSold", getLeastProducts);
+
+//Admin
+
+router.get("/getProductsByFilter", getProductsByFilter);
 
 router.put("/updateQuantity", updateVariantQuantity);
 

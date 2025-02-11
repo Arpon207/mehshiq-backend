@@ -8,14 +8,14 @@ export const addProduct = async (req, res) => {
   try {
     if (variants) {
       for (let i = 0; i < variants.length; i++) {
-        const { url, public_id } = await cloudinary.uploader.upload(
+        const { secure_url, public_id } = await cloudinary.uploader.upload(
           variants[i].image,
           {
             upload_preset: "product_images",
             // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
           }
         );
-        variants[i].image = { url, public_id };
+        variants[i].image = { url: secure_url, public_id };
       }
     }
     const newProductData = {
@@ -37,14 +37,14 @@ export const uploadImages = async (req, res) => {
     let allImage = [];
     const { images } = files;
     for (let i = 0; i < images.length; i++) {
-      const { url, public_id } = await cloudinary.uploader.upload(
+      const { secure_url, public_id } = await cloudinary.uploader.upload(
         images[i].filepath,
         {
           upload_preset: "product_images",
           // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
         }
       );
-      allImage.push({ url, public_id });
+      allImage.push({ url: secure_url, public_id });
     }
     return res
       .status(201)
@@ -171,6 +171,23 @@ export const getLeastProducts = async (req, res) => {
   }
 };
 
+//Admin
+
+export const getProductsByFilter = async (req, res) => {
+  const filter = {
+    ...(req.query.search && {
+      title: { $regex: req.query.search, $options: "i" },
+    }),
+    ...(req.query.filter === "outOfStock" && { "variants.quantity": 0 }),
+  };
+  try {
+    const result = await productsModel.find(filter).sort({ createdAt: -1 });
+    res.send(result);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export const updateVariantQuantity = async (req, res) => {
   const id = req.query.id;
   const color = req.query.color;
@@ -221,14 +238,14 @@ export const addVariant = async (req, res) => {
 
   try {
     if (variant) {
-      const { url, public_id } = await cloudinary.uploader.upload(
+      const { secure_url, public_id } = await cloudinary.uploader.upload(
         variant.image,
         {
           upload_preset: "product_images",
           // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
         }
       );
-      variant.image = { url, public_id };
+      variant.image = { url: secure_url, public_id };
     }
     const result = await productsModel.findOneAndUpdate(
       { _id: id },

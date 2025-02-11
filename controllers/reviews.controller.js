@@ -8,14 +8,14 @@ export const addReview = async (req, res) => {
     let reviewImages = [];
     if (reviewsImageUrls) {
       for (let i = 0; i < reviewsImageUrls.length; i++) {
-        const { url, public_id } = await cloudinary.uploader.upload(
+        const { secure_url, public_id } = await cloudinary.uploader.upload(
           reviewsImageUrls[i],
           {
             upload_preset: "review_images",
             // transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
           }
         );
-        reviewImages.push({ url, public_id });
+        reviewImages.push({ url: secure_url, public_id });
       }
     }
     const { previewImages, ...bodyData } = body;
