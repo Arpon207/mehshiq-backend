@@ -1,4 +1,5 @@
 import Order from "../models/orders.model.js";
+import productsModel from "../models/products.model.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -66,7 +67,21 @@ export const getOrderById = async (req, res) => {
 export const handleUpdateStatus = async (req, res) => {
   const id = req.query.id;
   const status = req.body.status;
+  const products = req.body.products;
   try {
+    if (status === "Delivered") {
+      for (const product of products) {
+        const result = await productsModel.findOneAndUpdate(
+          { _id: product._id, "variants.colorName": product.variant.color },
+          {
+            $inc: {
+              "variants.$.quantity": -product.quantity,
+              totalSold: +product.quantity,
+            },
+          }
+        );
+      }
+    }
     const result = await Order.findByIdAndUpdate(id, {
       status: status,
     });

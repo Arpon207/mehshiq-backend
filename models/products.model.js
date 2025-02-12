@@ -15,7 +15,22 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     variants: {
-      type: Array,
+      type: [
+        {
+          colorName: {
+            type: String,
+            required: true,
+          },
+          image: {
+            type: Object,
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+        },
+      ],
       required: true,
     },
     totalSold: {
