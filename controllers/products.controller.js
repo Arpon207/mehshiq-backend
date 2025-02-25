@@ -274,3 +274,19 @@ export const editDetails = async (req, res) => {
     console.log(error);
   }
 };
+
+export const deleteProduct = async (req, res) => {
+  const id = req.query.id;
+  const variants = req.body;
+  try {
+    if (variants) {
+      for (const image of variants) {
+        await cloudinary.uploader.destroy(image.image.public_id);
+      }
+      const result = await productsModel.findByIdAndDelete(id);
+      res.status(200).json({ message: "Product deleted successfully" });
+    }
+  } catch (error) {
+    throw error;
+  }
+};

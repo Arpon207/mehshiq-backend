@@ -3,6 +3,7 @@ import {
   addProduct,
   addVariant,
   bestSellerProducts,
+  deleteProduct,
   deleteVariant,
   editDetails,
   getAllProducts,
@@ -18,6 +19,8 @@ import {
   updateVariantQuantity,
   uploadImages,
 } from "../controllers/products.controller.js";
+import { verifyToken } from "../middleware/verifyToken.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 const router = express.Router();
 
@@ -55,5 +58,7 @@ router.put("/deleteVariant", deleteVariant);
 router.put("/addVariant", addVariant);
 
 router.put("/editDetails", editDetails);
+
+router.delete("/delete", verifyToken, isAdmin, deleteProduct);
 
 export default router;
