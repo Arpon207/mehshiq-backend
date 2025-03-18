@@ -16,6 +16,7 @@ import {
   getProductsByQuery,
   getWomensProducts,
   newProducts,
+  onSaleProducts,
   updateVariantQuantity,
   uploadImages,
 } from "../controllers/products.controller.js";
@@ -38,6 +39,8 @@ router.get("/searchByQuery", getProductsByQuery);
 router.get("/newArrivals", newProducts);
 
 router.get("/bestSellerProducts", bestSellerProducts);
+
+router.get("/onSaleProducts", onSaleProducts);
 
 router.get("/womens", getWomensProducts);
 

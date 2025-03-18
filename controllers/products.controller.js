@@ -83,6 +83,15 @@ export const bestSellerProducts = async (req, res) => {
   }
 };
 
+export const onSaleProducts = async (req, res) => {
+  try {
+    const result = await productsModel.find({ discount: { $gt: 0 } });
+    res.send(result);
+  } catch (error) {
+    console.log(e.message);
+  }
+};
+
 export const getWomensProducts = async (req, res) => {
   try {
     const result = await productsModel.find().limit(10);
