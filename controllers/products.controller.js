@@ -195,7 +195,10 @@ export const getProductsByQuery = async (req, res) => {
 
 export const getLeastProducts = async (req, res) => {
   try {
-    const result = await productsModel.find().sort({ sold: 1 }).limit(8);
+    const result = await productsModel
+      .find({}, { variants: 1 })
+      .sort({ sold: 1 })
+      .limit(8);
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
