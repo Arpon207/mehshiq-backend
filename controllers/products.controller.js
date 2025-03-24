@@ -61,34 +61,56 @@ export const getAllProducts = async (req, res) => {
     const result = await productsModel.find();
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
 export const newProducts = async (req, res) => {
   try {
-    const result = await productsModel.find().sort({ createdAt: -1 }).limit(10);
+    const result = await productsModel
+      .find(
+        {},
+        {
+          title: 1,
+          price: 1,
+          variants: 1,
+          createdAt: 1,
+          discount: 1,
+          category: 1,
+        }
+      )
+      .sort({ createdAt: -1 })
+      .limit(10);
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
 export const bestSellerProducts = async (req, res) => {
   try {
-    const result = await productsModel.find().sort({ sold: -1 }).limit(14);
+    const result = await productsModel
+      .find(
+        {},
+        { title: 1, price: 1, variants: 1, sold: 1, discount: 1, category: 1 }
+      )
+      .sort({ sold: -1 })
+      .limit(14);
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
 export const onSaleProducts = async (req, res) => {
   try {
-    const result = await productsModel.find({ discount: { $gt: 0 } });
+    const result = await productsModel.find(
+      { discount: { $gt: 0 } },
+      { title: 1, price: 1, variants: 1, discount: 1, category: 1 }
+    );
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
@@ -97,7 +119,7 @@ export const getWomensProducts = async (req, res) => {
     const result = await productsModel.find().limit(10);
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
@@ -106,7 +128,7 @@ export const getMensProducts = async (req, res) => {
     const result = await productsModel.find().limit(10);
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
@@ -117,7 +139,7 @@ export const getBackPacks = async (req, res) => {
       .limit(10);
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
@@ -126,7 +148,7 @@ export const getProductById = async (req, res) => {
     const result = await productsModel.findById(req.params.id);
     res.send(result);
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 
@@ -153,7 +175,7 @@ export const getProductsByCategory = async (req, res) => {
     const count = await productsModel.countDocuments(filter);
     res.send({ result, count });
   } catch (error) {
-    console.log(e.message);
+    console.log(error.message);
   }
 };
 

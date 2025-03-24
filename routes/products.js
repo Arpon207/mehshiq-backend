@@ -25,9 +25,6 @@ import isAdmin from "../middleware/isAdmin.js";
 
 const router = express.Router();
 
-router.post("/add", addProduct);
-router.post("/image/upload", uploadImages);
-
 router.get("/all", getAllProducts);
 
 router.get("/product/:id", getProductById);
@@ -51,6 +48,10 @@ router.get("/backpacks", getBackPacks);
 router.get("/getLeastSold", getLeastProducts);
 
 //Admin
+
+router.post("/add", addProduct);
+
+router.post("/image/upload", uploadImages);
 
 router.get("/getProductsByFilter", getProductsByFilter);
 
